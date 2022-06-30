@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Comments{% endblock  %}
+
+
+{% block block_body %}
+
+    <div style="padding:10px">
+        {%if post.user_profile.profile_pic%}
+            <img src="/media/{{search_user.user_profile.profile_pic}}" width='65px' height='65px' class='rounded-circle'>
+        {% else %}
+            <img src="/media/default.png" width='65px' height='65px' class='rounded-circle'>
+        {% endif %}
+        <a href="{%url 'App_login:user_other' username=post.author %}">{{post.author}}</a>
+        <h6>Upload on: {{post.upload_date}}</h6>
+
+    <img src="/media/{{post.image}}" width='700px'>
+
+
+    <br>
+    <br>
+    <br>
+   <div class="row">
+       <div class="col-sm-6">
+           <h4>Comments</h4>
+           <hr>
+           {% for comment in post.post_comment.all %}
+           <ul>
+            <li><p><a href="#">{{comment.user}}</a>  {{comment.comment}}</p>
+            <h6>{{comment.comment_date}}</h6></li>
+            </ul>
+            {% endfor %}
+       </div>
+       <div class="col-sm-6">
+        <form method="POST">{% csrf_token %}
+            {{ comment_form|crispy }}
+            <br>
+            <button type="submit" class='btn btn-primary btn-md'>Comment</button>
+        </form>
+    </div>
+   </div>
+
+<br>
+<br>
+<br>
+
+{% endblock  %}
